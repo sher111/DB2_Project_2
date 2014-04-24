@@ -23,6 +23,7 @@ public class IndexMgr {
    public IndexMgr(boolean isnew, TableMgr tblmgr, Transaction tx) {
       if (isnew) {
          Schema sch = new Schema();
+         sch.addStringField("indextype", MAX_NAME);
          sch.addStringField("indexname", MAX_NAME);
          sch.addStringField("tablename", MAX_NAME);
          sch.addStringField("fieldname", MAX_NAME);
@@ -45,6 +46,16 @@ public class IndexMgr {
       RecordFile rf = new RecordFile(ti, tx);
       rf.insert();
       rf.setString("indextype", idxtype);
+      rf.setString("indexname", idxname);
+      rf.setString("tablename", tblname);
+      rf.setString("fieldname", fldname);
+      rf.close();
+   }
+   
+   public void createIndex(String idxname, String tblname, String fldname, Transaction tx) {
+      RecordFile rf = new RecordFile(ti, tx);
+      rf.insert();
+      //rf.setString("indextype", idxtype);
       rf.setString("indexname", idxname);
       rf.setString("tablename", tblname);
       rf.setString("fieldname", fldname);

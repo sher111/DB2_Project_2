@@ -37,6 +37,10 @@ public class MetadataMgr {
       idxmgr.createIndex(idxtype, idxname, tblname, fldname, tx);
    }
    
+   public void createIndex(String idxname, String tblname, String fldname, Transaction tx) {
+      idxmgr.createIndex(idxname, tblname, fldname, tx);
+   }
+   
    public Map<String,IndexInfo> getIndexInfo(String tblname, Transaction tx) {
       return idxmgr.getIndexInfo(tblname, tx);
    }
