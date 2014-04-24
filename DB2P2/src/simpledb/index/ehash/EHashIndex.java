@@ -1,10 +1,12 @@
 package simpledb.index.ehash;
 
-import simpledb.tx.Transaction;
-import simpledb.record.*;
-import simpledb.query.*;
 import simpledb.index.Index;
-import simpledb.index.hash.HashIndex;
+import simpledb.query.Constant;
+import simpledb.query.TableScan;
+import simpledb.record.RID;
+import simpledb.record.Schema;
+import simpledb.record.TableInfo;
+import simpledb.tx.Transaction;
 
 /**
  * An extensible hash implementation of the Index interface.
@@ -12,7 +14,7 @@ import simpledb.index.hash.HashIndex;
  * and each bucket is implemented as a file of index records.
  */
 public class EHashIndex implements Index {
-	public int NUM_BUCKETS = 4;
+	public static int NUM_BUCKETS = 4;
 	private String idxname;
 	private Schema sch;
 	private Transaction tx;
@@ -122,6 +124,6 @@ public class EHashIndex implements Index {
 	 * @return the cost of traversing the index
 	 */
 	public static int searchCost(int numblocks, int rpb){
-		return numblocks / HashIndex.NUM_BUCKETS;
+		return numblocks / EHashIndex.NUM_BUCKETS;
 	}
 }
