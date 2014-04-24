@@ -48,8 +48,16 @@ public class IndexInfo {
     */
    public Index open() {
       Schema sch = schema();
-      // Create new HashIndex for hash indexing
-      return new HashIndex(idxname, sch, tx);
+      
+      if (idxtype.equalsIgnoreCase("bt")) {	// Create a B-Tree index
+      	return new BTreeIndex(idxname, sch, tx);
+      } else if (idxtype.equalsIgnoreCase("eh")) {	// Create an extensible hash index
+      	//return new ExtensibleHashIndex(idxname, sch, tx);
+      	return null;
+      } else {	// HashIndex is the default
+         // Create new HashIndex for hash indexing
+         return new HashIndex(idxname, sch, tx);
+      }
    }
    
    /**
