@@ -2,12 +2,14 @@ package simpledb.metadata;
 
 import static java.sql.Types.INTEGER;
 import static simpledb.file.Page.BLOCK_SIZE;
+import simpledb.index.Index;
+import simpledb.index.btree.BTreeIndex; //in case we change to btree indexing
+import simpledb.index.ehash.EHashIndex;
+import simpledb.index.hash.HashIndex;
+import simpledb.record.Schema;
+import simpledb.record.TableInfo;
 import simpledb.server.SimpleDB;
 import simpledb.tx.Transaction;
-import simpledb.record.*;
-import simpledb.index.Index;
-import simpledb.index.hash.HashIndex; 
-import simpledb.index.btree.BTreeIndex; //in case we change to btree indexing
 
 
 /**
@@ -52,8 +54,7 @@ public class IndexInfo {
       if (idxtype.equalsIgnoreCase("bt")) {	// Create a B-Tree index
       	return new BTreeIndex(idxname, sch, tx);
       } else if (idxtype.equalsIgnoreCase("eh")) {	// Create an extensible hash index
-      	//return new ExtensibleHashIndex(idxname, sch, tx);
-      	return null;
+      	return new EHashIndex(idxname, sch, tx);
       } else {	// HashIndex is the default
          // Create new HashIndex for hash indexing
          return new HashIndex(idxname, sch, tx);
