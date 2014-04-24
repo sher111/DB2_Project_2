@@ -44,7 +44,7 @@ public class IndexInfo {
       si = SimpleDB.mdMgr().getStatInfo(tblname, ti, tx);
    }
    
-   /**	OVERRIDE???
+   /**
     * Opens the index described by this object.
     * @return the Index object associated with this information
     */
