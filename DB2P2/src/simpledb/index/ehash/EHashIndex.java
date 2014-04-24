@@ -1,9 +1,10 @@
-package simpledb.index.hash;
+package simpledb.index.ehash;
 
 import simpledb.tx.Transaction;
 import simpledb.record.*;
 import simpledb.query.*;
 import simpledb.index.Index;
+import simpledb.index.hash.HashIndex;
 
 /**
  * An extensible hash implementation of the Index interface.
