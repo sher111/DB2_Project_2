@@ -18,6 +18,14 @@ public class CreateIndexData {
    }
    
    /**
+    * Returns the type of the index.
+    * @return the type of the index.
+    */
+   public String indexType() {
+   	return idxtype;
+   }
+   
+   /**
     * Returns the name of the index.
     * @return the name of the index
     */
