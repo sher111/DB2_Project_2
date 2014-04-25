@@ -1,5 +1,7 @@
 package simpledb.index.ehash;
 
+import java.util.ArrayList;
+
 import simpledb.index.Index;
 import simpledb.query.Constant;
 import simpledb.query.TableScan;
@@ -21,7 +23,7 @@ public class EHashIndex implements Index {
 	private Transaction tx;
 	private Constant searchkey = null;
 	private TableScan ts = null;
-	private ArrayList indeces = new ArrayList<int>();
+	private ArrayList<Integer> indexes = new ArrayList<Integer>();
 
 	/**
 	 * Opens an extensible hash index for the specified index.
@@ -34,7 +36,7 @@ public class EHashIndex implements Index {
 		this.sch = sch;
 		this.tx = tx;
 		for (int i = 0; i < NUM_BUCKETS; i++) {
-			indeces.add(i, global_index)
+			indexes.add(i, global_index);
 		}
 	}
 
@@ -52,7 +54,7 @@ public class EHashIndex implements Index {
 		this.searchkey = searchkey;
 		int bucket = searchkey.hashCode() % NUM_BUCKETS;
 		//additions
-		int local_index = indeces.get(bucket);
+		int local_index = indexes.get(bucket);
 		String sigbin = toSigBinary(bucket, local_index);
 		String tblname = idxname + sigbin;
 		//end additions
