@@ -75,6 +75,20 @@ public class EHashIndex implements Index {
 
 	}
 
+	/*
+	 *Expand the ArrayList, duplicate the values.
+	 */
+	public void increaseGlobal() {
+
+		for (int i = 0; i < NUM_BUCKETS; i++) {
+			indexes.add(i+NUM_BUCKETS, indexes.get(i));
+		}
+
+		global_index++;
+		NUM_BUCKETS = NUM_BUCKETS * 2;
+
+	}
+
 	/**
 	 * Moves to the next record having the search key.
 	 * The method loops through the table scan for the bucket,
