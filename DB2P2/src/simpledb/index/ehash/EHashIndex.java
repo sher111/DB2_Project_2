@@ -14,12 +14,14 @@ import simpledb.tx.Transaction;
  * and each bucket is implemented as a file of index records.
  */
 public class EHashIndex implements Index {
-	public static int NUM_BUCKETS = 4;
+	public static int NUM_BUCKETS = 4; //must be 2^global_index
+	private int global_index = 2;
 	private String idxname;
 	private Schema sch;
 	private Transaction tx;
 	private Constant searchkey = null;
 	private TableScan ts = null;
+	private ArrayList indeces = new ArrayList<int>();
 
 	/**
 	 * Opens an extensible hash index for the specified index.
@@ -31,6 +33,9 @@ public class EHashIndex implements Index {
 		this.idxname = idxname;
 		this.sch = sch;
 		this.tx = tx;
+		for (int i = 0; i < NUM_BUCKETS; i++) {
+			indeces.add(i, global_index)
+		}
 	}
 
 	/**
@@ -46,9 +51,26 @@ public class EHashIndex implements Index {
 		close();
 		this.searchkey = searchkey;
 		int bucket = searchkey.hashCode() % NUM_BUCKETS;
-		String tblname = idxname + bucket;
+		//additions
+		int local_index = indeces.get(bucket);
+		String sigbin = toSigBinary(bucket, local_index);
+		String tblname = idxname + sigbin;
+		//end additions
 		TableInfo ti = new TableInfo(tblname, sch);
 		ts = new TableScan(ti, tx);
+	}
+
+	/*
+	 *Converts a number to binary using a significance value
+	 */
+	public String toSigBinary(int bucket, int local_index) {
+
+		String result = Integer.toBinaryString(bucket);
+
+		result = result.substring(0, local_index-1);
+
+		return result;
+
 	}
 
 	/**
