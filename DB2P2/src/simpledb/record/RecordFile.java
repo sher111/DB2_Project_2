@@ -125,6 +125,22 @@ public class RecordFile {
          moveTo(currentblknum + 1);
       }
    }
+
+   /**
+    * Inserts a new, blank record somewhere in the file
+    * beginning at the current record.
+    * If the new record does not fit into an existing block,
+    * it returns FALSE and returns control back to the calling 
+    * function to make sure it doesn't return false next time.
+    */
+   public boolean Einsert() {
+      while (!rp.insert()) {
+         if (atLastBlock())
+            return false;
+         moveTo(currentblknum + 1);
+      }
+      return true;
+   }
    
    /**
     * Positions the current record as indicated by the

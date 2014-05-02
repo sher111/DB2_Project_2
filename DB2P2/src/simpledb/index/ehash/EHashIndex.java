@@ -120,10 +120,32 @@ public class EHashIndex implements Index {
 	 */
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
-		ts.insert();
-		ts.setInt("block", rid.blockNumber());
-		ts.setInt("id", rid.id());
-		ts.setVal("dataval", val);
+		if (ts.Einsert()) {
+			ts.setInt("block", rid.blockNumber());
+			ts.setInt("id", rid.id());
+			ts.setVal("dataval", val);
+		}
+		else {
+
+			//TODO. Bucket full. Detected but not dealt with fully yet.
+
+			//Updates the array with the proper incremented local index value.
+			int bucket = searchkey.hashCode() % NUM_BUCKETS;
+			set(bucket, indexes.get(bucket)+1);
+
+			//If local index exceeds global index, update the array list
+			int local_index = indexes.get(bucket);
+			if (local_index > global_index) {
+				increaseGlobal();
+			}
+
+			//TODO totally should do something about splitting the buckets. 
+			//Theoretically this should be the only thing that needs to be added.
+			//Completely haven't tested any of this code. Really just going
+			//off of logic and hopes and maybe some dreams thrown in.
+			//Reading over my logic might do some good.
+			
+		}
 	}
 
 	/**

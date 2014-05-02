@@ -98,6 +98,10 @@ public class TableScan implements UpdateScan {
    public void insert() {
       rf.insert();
    }
+
+   public boolean Einsert() {
+      return rf.insert();
+   }
    
    public RID getRid() {
       return rf.currentRid();
