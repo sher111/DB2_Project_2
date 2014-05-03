@@ -151,8 +151,8 @@ public class EHashIndex implements Index {
 				int checkBucket = getBucket(toCheck);
 				if (checkBucket != bucket) {	// If it belongs in the new bucket
 					// Insert toCheck into newTable
-					int blknum = ts.getInt("id");
-					int id = ts.getInt("dataval");
+					int blknum = ts.getInt("block");
+					int id = ts.getInt("id");
 					newTable.insert();
 					newTable.setInt("block", blknum);
 					newTable.setInt("id", id);

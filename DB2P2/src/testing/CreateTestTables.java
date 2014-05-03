@@ -1,10 +1,12 @@
 package testing;
 
+import java.io.Console;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+
 import simpledb.remote.SimpleDriver;
 
 
@@ -61,6 +63,7 @@ public class CreateTestTables {
 					for(int j=0;j<maxSize;j++)
 					{
 						s.executeUpdate("insert into test"+i+" (a1,a2) values("+rand.nextInt(1000)+","+rand.nextInt(1000)+ ")");
+						System.out.println(i+" "+j);
 					}
 				}
 				else//case where i=5
@@ -68,6 +71,7 @@ public class CreateTestTables {
 					for(int j=0;j<maxSize/2;j++)// insert 10000 records into test5
 					{
 						s.executeUpdate("insert into test"+i+" (a1,a2) values("+j+","+j+ ")");
+						System.out.println(i+" "+j);
 					}
 				}
 			}
