@@ -98,9 +98,9 @@ public class TableScan implements UpdateScan {
    public void insert() {
       rf.insert();
    }
-
-   public boolean Einsert() {
-      return rf.insert();
+   
+   public boolean eInsert() {
+   	return rf.eInsert();
    }
    
    public RID getRid() {

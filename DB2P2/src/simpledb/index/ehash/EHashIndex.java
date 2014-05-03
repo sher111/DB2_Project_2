@@ -17,7 +17,7 @@ import simpledb.tx.Transaction;
  */
 public class EHashIndex implements Index {
 	public static int NUM_BUCKETS = 4; //must be 2^global_index
-	private int global_index = 2;
+	private int global_depth = 2;
 	private String idxname;
 	private Schema sch;
 	private Transaction tx;
@@ -36,7 +36,7 @@ public class EHashIndex implements Index {
 		this.sch = sch;
 		this.tx = tx;
 		for (int i = 0; i < NUM_BUCKETS; i++) {
-			indexes.add(i, global_index);
+			indexes.add(i, global_depth);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class EHashIndex implements Index {
 	public void beforeFirst(Constant searchkey) {
 		close();
 		this.searchkey = searchkey;
-		int bucket = searchkey.hashCode() % NUM_BUCKETS;
+		int bucket = getBucket(searchkey);
 		//additions
 		int local_index = indexes.get(bucket);
 		String sigbin = toSigBinary(bucket, local_index);
@@ -77,6 +77,7 @@ public class EHashIndex implements Index {
 
 	/*
 	 *Expand the ArrayList, duplicate the values.
+	 *TODO fix?
 	 */
 	public void increaseGlobal() {
 
@@ -84,7 +85,7 @@ public class EHashIndex implements Index {
 			indexes.add(i+NUM_BUCKETS, indexes.get(i));
 		}
 
-		global_index++;
+		global_depth++;
 		NUM_BUCKETS = NUM_BUCKETS * 2;
 
 	}
@@ -120,32 +121,50 @@ public class EHashIndex implements Index {
 	 */
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
-		if (ts.Einsert()) {
+		if (ts.eInsert()) {
 			ts.setInt("block", rid.blockNumber());
 			ts.setInt("id", rid.id());
 			ts.setVal("dataval", val);
 		}
 		else {
-
-			//TODO. Bucket full. Detected but not dealt with fully yet.
-
-			//Updates the array with the proper incremented local index value.
-			int bucket = searchkey.hashCode() % NUM_BUCKETS;
-			set(bucket, indexes.get(bucket)+1);
-
-			//If local index exceeds global index, update the array list
-			int local_index = indexes.get(bucket);
-			if (local_index > global_index) {
-				increaseGlobal();
+			int bucket = getBucket(val);
+			if (global_depth == indexes.get(bucket)) {	// If globalDepth == localDepth
+				increaseGlobal();											// Expand global depth
 			}
-
-			//TODO totally should do something about splitting the buckets. 
-			//Theoretically this should be the only thing that needs to be added.
-			//Completely haven't tested any of this code. Really just going
-			//off of logic and hopes and maybe some dreams thrown in.
-			//Reading over my logic might do some good.
 			
+			int newBucket = bucket + NUM_BUCKETS;
+
+			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
+			indexes.set(newBucket, indexes.get(newBucket) + 1);
+			
+			int local_index = indexes.get(newBucket);			// TODO fix this shit
+			String sigbin = toSigBinary(newBucket, local_index);
+			String tblname = idxname + sigbin;
+			TableInfo ti = new TableInfo(tblname, sch);
+			TableScan newTable = new TableScan(ti, tx);
+			
+			newTable.beforeFirst();
+			ts.beforeFirst();
+			
+			do {
+				Constant toCheck = ts.getVal("dataval");
+				int checkBucket = getBucket(toCheck);
+				if (checkBucket != bucket) {	// If it belongs in the new bucket
+					// Insert toCheck into newTable
+					int blknum = ts.getInt("id");
+					int id = ts.getInt("dataval");
+					newTable.insert();
+					newTable.setInt("block", blknum);
+					newTable.setInt("id", id);
+					newTable.setVal("dataval", val);
+					
+					// Delete toCheck from ts
+					ts.delete();
+				}
+			} while (ts.next());
 		}
+		
+		insert(val, rid);
 	}
 
 	/**
@@ -185,5 +204,9 @@ public class EHashIndex implements Index {
 	 */
 	public static int searchCost(int numblocks, int rpb){
 		return numblocks / EHashIndex.NUM_BUCKETS;
+	}
+	
+	private int getBucket (Constant val) {
+		return val.hashCode() % NUM_BUCKETS;	// TODO this is wrong
 	}
 }
