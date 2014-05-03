@@ -1,6 +1,5 @@
 package testing;
 
-import java.io.Console;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import simpledb.remote.SimpleDriver;
 
 
 public class CreateTestTables {
-	final static int maxSize=20000;
+	final static int maxSize=100;
 	
 	
 	public static void main(String[] args) {
@@ -52,7 +51,7 @@ public class CreateTestTables {
 					")");
 
 			s.executeUpdate("create sh index idx1 on test1 (a1)");
-			s.executeUpdate("create ex index idx2 on test2 (a1)");
+			s.executeUpdate("create eh index idx2 on test2 (a1)");
 			s.executeUpdate("create bt index idx3 on test3 (a1)");
 			
 			for(int i=1;i<6;i++)

@@ -32,6 +32,7 @@ public class EHashIndex implements Index {
 	 * @param tx the calling transaction
 	 */
 	public EHashIndex(String idxname, Schema sch, Transaction tx) {
+		System.err.println("Using EHashIndex");
 		this.idxname = idxname;
 		this.sch = sch;
 		this.tx = tx;
@@ -127,6 +128,7 @@ public class EHashIndex implements Index {
 			ts.setVal("dataval", val);
 		}
 		else {
+			System.err.println("Adding Buffer");
 			int bucket = getBucket(val);
 			if (global_depth == indexes.get(bucket)) {	// If globalDepth == localDepth
 				increaseGlobal();											// Expand global depth
