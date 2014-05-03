@@ -13,6 +13,7 @@ public class TableInfo {
    private Map<String,Integer> offsets;
    private int recordlen;
    private String tblname;
+   public boolean sorted; //ADDED CODE
    
    /**
     * Creates a TableInfo object, given a table name
@@ -25,6 +26,7 @@ public class TableInfo {
    public TableInfo(String tblname, Schema schema) {
       this.schema = schema;
       this.tblname = tblname;
+	  this.sorted = false; // MORE ADDED CODE
       offsets  = new HashMap<String,Integer>();
       int pos = 0;
       for (String fldname : schema.fields()) {
