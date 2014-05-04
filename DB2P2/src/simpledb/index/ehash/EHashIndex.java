@@ -32,7 +32,6 @@ public class EHashIndex implements Index {
 	 * @param tx the calling transaction
 	 */
 	public EHashIndex(String idxname, Schema sch, Transaction tx) {
-		System.err.println("Using EHashIndex");
 		this.idxname = idxname;
 		this.sch = sch;
 		this.tx = tx;
@@ -121,6 +120,7 @@ public class EHashIndex implements Index {
 	 * @see simpledb.index.Index#insert(simpledb.query.Constant, simpledb.record.RID)
 	 */
 	public void insert(Constant val, RID rid) {
+		System.err.println("Adding tuple");
 		beforeFirst(val);
 		if (ts.eInsert()) {
 			ts.setInt("block", rid.blockNumber());
@@ -164,9 +164,8 @@ public class EHashIndex implements Index {
 					ts.delete();
 				}
 			} while (ts.next());
+			insert(val, rid);
 		}
-		
-		insert(val, rid);
 	}
 
 	/**
