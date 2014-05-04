@@ -10,7 +10,7 @@ import simpledb.remote.SimpleDriver;
 
 
 public class CreateTestTables {
-	final static int maxSize=100;
+	final static int maxSize=1000;
 	
 	
 	public static void main(String[] args) {

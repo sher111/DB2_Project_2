@@ -1,6 +1,9 @@
 package simpledb.server;
 
 import simpledb.remote.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.rmi.registry.*;
 
 public class Startup {
@@ -16,5 +19,8 @@ public class Startup {
       reg.rebind("simpledb", d);
       
       System.out.println("database server ready");
+      
+//      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//      System.setOut(new PrintStream(baos));
    }
 }
