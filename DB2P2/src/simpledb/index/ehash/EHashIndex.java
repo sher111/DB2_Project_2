@@ -120,7 +120,6 @@ public class EHashIndex implements Index {
 	 * @see simpledb.index.Index#insert(simpledb.query.Constant, simpledb.record.RID)
 	 */
 	public void insert(Constant val, RID rid) {
-		System.err.println("Adding tuple");
 		beforeFirst(val);
 		if (ts.eInsert()) {
 			ts.setInt("block", rid.blockNumber());
@@ -129,12 +128,13 @@ public class EHashIndex implements Index {
 		}
 		else {
 			System.err.println("Adding Buffer");
+			
 			int bucket = getBucket(val);
 			if (global_depth == indexes.get(bucket)) {	// If globalDepth == localDepth
 				increaseGlobal();											// Expand global depth
 			}
-			
-			int newBucket = bucket + NUM_BUCKETS;
+
+			int newBucket = bucket + (NUM_BUCKETS / 2);
 
 			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
 			indexes.set(newBucket, indexes.get(newBucket) + 1);
@@ -148,7 +148,7 @@ public class EHashIndex implements Index {
 			newTable.beforeFirst();
 			ts.beforeFirst();
 			
-			do {
+			while (ts.next()) {
 				Constant toCheck = ts.getVal("dataval");
 				int checkBucket = getBucket(toCheck);
 				if (checkBucket != bucket) {	// If it belongs in the new bucket
@@ -158,12 +158,12 @@ public class EHashIndex implements Index {
 					newTable.insert();
 					newTable.setInt("block", blknum);
 					newTable.setInt("id", id);
-					newTable.setVal("dataval", val);
+					newTable.setVal("dataval", toCheck);
 					
 					// Delete toCheck from ts
 					ts.delete();
 				}
-			} while (ts.next());
+			}
 			insert(val, rid);
 		}
 	}
@@ -209,5 +209,16 @@ public class EHashIndex implements Index {
 	
 	private int getBucket (Constant val) {
 		return val.hashCode() % NUM_BUCKETS;	// TODO this is wrong
+	}
+	
+	public String toString() {
+		String toReturn = "";
+		toReturn += "globalDepth:\t" + this.global_depth;
+		toReturn += "\nnumBuckets:\t" + NUM_BUCKETS;
+		toReturn += "\nindicies:\t" + this.indexes.size();
+		toReturn += "\nsearchKey:\t" + this.searchkey;
+		
+		return toReturn;
+		
 	}
 }
