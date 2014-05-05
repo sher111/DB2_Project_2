@@ -137,9 +137,9 @@ public class EHashIndex implements Index {
 			System.err.println(toString());
 			System.err.println("bucket:" + bucket);
 			System.err.println("local:" + indexes.get(bucket));
-			if (global_depth < indexes.get(bucket)) {	// If globalDepth == localDepth
+			if (global_depth < indexes.get(bucket)) {
 				System.err.println("Expanding global");
-				increaseGlobal();											// Expand global depth
+				increaseGlobal();
 			}
 			System.err.println(toString());
 
