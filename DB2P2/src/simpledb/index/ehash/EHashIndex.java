@@ -62,7 +62,7 @@ public class EHashIndex implements Index {
 		ts = new TableScan(ti, tx);
 	}
 
-	/*
+	/**
 	 *Converts a number to binary using a significance value
 	 */
 	public String toSigBinary(int bucket, int local_index) {
@@ -76,6 +76,7 @@ public class EHashIndex implements Index {
 		return result;
 
 	}
+	
 
 	/*
 	 *Expand the ArrayList, duplicate the values.
@@ -214,7 +215,7 @@ public class EHashIndex implements Index {
 	}
 	
 	private int getBucket (Constant val) {
-		return val.hashCode() % NUM_BUCKETS;	// TODO this is wrong
+		return val.hashCode() % NUM_BUCKETS;
 	}
 	
 	public String toString() {
