@@ -109,4 +109,14 @@ public class TableMgr {
       fcatfile.close();
       return new TableInfo(tblname, sch, offsets, reclen);
    }
+   
+   
+   public void setTableInfo(String tblname, TableInfo ti, Transaction tx) {
+   	RecordFile fcatfile = new RecordFile(fcatInfo, tx);
+   	while (fcatfile.next()) {
+   		if (fcatfile.getString("tblname").equals(tblname)) {
+   			fcatfile.setTableInfo(ti);
+   		}
+   	}
+   }
 }

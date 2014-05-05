@@ -5,10 +5,10 @@ import simpledb.record.*;
 import java.util.Map;
 
 public class MetadataMgr {
-   private static TableMgr  tblmgr;
-   private static ViewMgr   viewmgr;
-   private static StatMgr   statmgr;
-   private static IndexMgr  idxmgr;
+   public static TableMgr  tblmgr;
+   public static ViewMgr   viewmgr;
+   public static StatMgr   statmgr;
+   public static IndexMgr  idxmgr;
    
    public MetadataMgr(boolean isnew, Transaction tx) {
       tblmgr  = new TableMgr(isnew, tx);

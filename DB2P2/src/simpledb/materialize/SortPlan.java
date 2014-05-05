@@ -2,6 +2,7 @@ package simpledb.materialize;
 
 import simpledb.tx.Transaction;
 import simpledb.record.*;
+import simpledb.metadata.MetadataMgr;
 import simpledb.query.*;
 
 import java.util.*;
@@ -39,8 +40,30 @@ public class SortPlan implements Plan {
       Scan src = p.open();
       List<TempTable> runs = splitIntoRuns(src);
       src.close();
+      
+      for (int i = 0; i < runs.size(); ++i) {
+      	if (runs.get(i).getTableInfo().isSorted()) {
+      		runs.remove(i);
+      	}
+      }
+      
       while (runs.size() > 2)
          runs = doAMergeIteration(runs);
+      
+      TempTable tt1 = runs.get(0);
+   	TempTable tt2 = runs.get(1);
+   	
+   	if (!tt1.getTableInfo().getTableName().equals(tt2.getTableInfo().getTableName())) {
+   		TempTable newTT1 = runs.get(0);
+   		TempTable newTT2 = runs.get(1);
+   		
+   		newTT1.ti.setSorted(false);
+   		newTT2.ti.setSorted(false);
+   		
+   		MetadataMgr.tblmgr.setTableInfo(newTT1.ti.getTableName(), newTT1.ti, newTT1.tx);
+   		MetadataMgr.tblmgr.setTableInfo(newTT2.ti.getTableName(), newTT2.ti, newTT2.tx);
+   	}
+   	
       return new SortScan(runs, comp);
    }
    

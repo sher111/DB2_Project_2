@@ -20,7 +20,7 @@ public class Startup {
       
       System.out.println("database server ready");
       
-//      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//      System.setOut(new PrintStream(baos));
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      System.setOut(new PrintStream(baos));
    }
 }

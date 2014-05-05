@@ -172,4 +172,8 @@ public class RecordFile {
       RecordFormatter fmtr = new RecordFormatter(ti);
       tx.append(filename, fmtr);
    }
+
+	public void setTableInfo(TableInfo newTableInfo) {
+		this.ti = newTableInfo;
+	}
 }

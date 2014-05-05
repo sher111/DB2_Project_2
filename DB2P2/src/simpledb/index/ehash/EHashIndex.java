@@ -17,7 +17,7 @@ import simpledb.tx.Transaction;
  */
 public class EHashIndex implements Index {
 	public static int NUM_BUCKETS = 4; //must be 2^global_index
-	private int global_depth = 2;
+	private static int global_depth = 2;
 	private String idxname;
 	private Schema sch;
 	private Transaction tx;
@@ -69,7 +69,9 @@ public class EHashIndex implements Index {
 
 		String result = Integer.toBinaryString(bucket);
 
-		result = result.substring(0, local_index-1);
+		if (result.length() >= local_index) {
+			result = result.substring(0, local_index-1);
+		}
 
 		return result;
 
@@ -127,19 +129,23 @@ public class EHashIndex implements Index {
 			ts.setVal("dataval", val);
 		}
 		else {
-			System.err.println("Adding Buffer");
+			System.err.println("\nAdding Buffer");
 			
 			int bucket = getBucket(val);
-			if (global_depth == indexes.get(bucket)) {	// If globalDepth == localDepth
+			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
+			
+			System.err.println(toString());
+			System.err.println("bucket:" + bucket);
+			System.err.println("local:" + indexes.get(bucket));
+			if (global_depth < indexes.get(bucket)) {	// If globalDepth == localDepth
+				System.err.println("Expanding global");
 				increaseGlobal();											// Expand global depth
 			}
+			System.err.println(toString());
 
 			int newBucket = bucket + (NUM_BUCKETS / 2);
-
-			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
-			indexes.set(newBucket, indexes.get(newBucket) + 1);
 			
-			int local_index = indexes.get(newBucket);			// TODO fix this shit
+			int local_index = indexes.get(newBucket);
 			String sigbin = toSigBinary(newBucket, local_index);
 			String tblname = idxname + sigbin;
 			TableInfo ti = new TableInfo(tblname, sch);
