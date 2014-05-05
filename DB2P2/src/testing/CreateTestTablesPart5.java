@@ -1,4 +1,4 @@
-package simpledb.myDB;
+package testing;
 
 import java.sql.Connection;
 
@@ -10,7 +10,7 @@ import java.util.Random;
 
 import simpledb.remote.SimpleDriver;
 
-public class CreateTestTablesForPart5 {
+public class CreateTestTablesPart5 {
 
     final static int maxSize = 10;
 
@@ -22,7 +22,6 @@ public class CreateTestTablesForPart5 {
         Random rand=null;
         Statement s=null;
 
-        final int constantNumber = 1; // This is a constant number that is used.
         final int seed = 1; // This is a seed used for consistent testing.
  
         try {
@@ -78,8 +77,8 @@ public class CreateTestTablesForPart5 {
  
             // Print out all the results
             while (result.next()) {
-                int a1 = rs.getInt("a1");
-                int a3 = rs.getInt("a3");
+                int a1 = result.getInt("a1");
+                int a3 = result.getInt("a3");
                 System.out.println("Result: a1 is " + a1 + " and a3 is " + a3);
             }
 
