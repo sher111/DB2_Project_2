@@ -9,7 +9,7 @@ import java.util.Random;
 import simpledb.remote.SimpleDriver;
 
 
-public class CreateTestTables {
+public class CreateTestTablesPart3 {
 	final static int maxSize=1000;
 	
 	
@@ -88,4 +88,4 @@ public class CreateTestTables {
 	}
 }
 
-s.executeUpdate("Select [ALL Attributes] from test" + i + " Where a" + (2*i) + " = 20");
+//s.executeUpdate("Select [ALL Attributes] from test" + i + " Where a" + (2*i) + " = 20");

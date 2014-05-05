@@ -219,7 +219,7 @@ public class EHashIndex implements Index {
 	
 	public String toString() {
 		String toReturn = "";
-		toReturn += "globalDepth:\t" + this.global_depth;
+		toReturn += "globalDepth:\t" + global_depth;
 		toReturn += "\nnumBuckets:\t" + NUM_BUCKETS;
 		toReturn += "\nindicies:\t" + this.indexes.size();
 		toReturn += "\nsearchKey:\t" + this.searchkey;
