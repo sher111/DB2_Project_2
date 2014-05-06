@@ -37,7 +37,6 @@ public class EHashIndex implements Index {
 		this.sch = sch;
 		this.tx = tx;
 		if (first) {
-			System.err.println("aa;lsdkjf;alksdfj;alskdjf;alskjdf;alskjf;laskdjf;alskdjf;alskdfj;alskdjf;alskdjf;alskdjfa;slfj;alskdfj;alskdfja;sldkfj");
 			first = false;
 			for (int i = 0; i < NUM_BUCKETS; i++) {
 				indexes.add(i, global_depth);
@@ -128,11 +127,6 @@ public class EHashIndex implements Index {
 	 * @see simpledb.index.Index#insert(simpledb.query.Constant, simpledb.record.RID)
 	 */
 	public void insert(Constant val, RID rid) {
-		if (getBucket(val) == 9) {
-			System.err.println("FUCKING 9!!!!!!!!!!!!!!!!!!!!!!!!!");
-			return;
-		}
-		System.out.println(getBucket(val));
 		beforeFirst(val);
 		if (ts.eInsert()) {
 			ts.setInt("block", rid.blockNumber());
@@ -140,23 +134,15 @@ public class EHashIndex implements Index {
 			ts.setVal("dataval", val);
 		}
 		else {
-			System.err.println("\nAdding Buffer");
 			
 			int bucket = getBucket(val);
-			System.err.println("Orig bucket:\t" + bucket);
 			bucket = bucket % ((Double)Math.pow(2, indexes.get(bucket))).intValue();
-			System.err.println("New bucket:\t" + bucket);
 			
 			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
 			
-			System.err.println(toString());
-			System.err.println("bucket:" + bucket);
-			System.err.println("local:" + indexes.get(bucket));
 			if (global_depth < indexes.get(bucket)) {
-				System.err.println("Expanding global");
 				increaseGlobal();
 			}
-			System.err.println(toString());
 
 			int newBucket = bucket + (NUM_BUCKETS / 2);
 			indexes.set(newBucket, indexes.get(bucket));
@@ -186,7 +172,6 @@ public class EHashIndex implements Index {
 					ts.delete();
 				}
 			}
-			System.out.println("Recursing");
 			insert(val, rid);
 		}
 	}
@@ -234,11 +219,12 @@ public class EHashIndex implements Index {
 		return val.hashCode() % NUM_BUCKETS;
 	}
 	
+	@Override
 	public String toString() {
 		String toReturn = "";
 		toReturn += "globalDepth:\t" + global_depth;
 		toReturn += "\nnumBuckets:\t" + NUM_BUCKETS;
-		toReturn += "\nindicies:\t" + this.indexes.size();
+		toReturn += "\nindicies:\t" + indexes.size();
 		toReturn += "\nsearchKey:\t" + this.searchkey;
 		
 		return toReturn;

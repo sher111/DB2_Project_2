@@ -88,7 +88,7 @@ public class CreateTestTablesPart5 {
 //---------------------------------------Post Query Comparison------------------------------------------------
 //------------------------------------------------------------------------------------------------------------
 
-            float ratio = (elapsed1 / elapsed2);
+            float ratio = ((float)elapsed1 / (float)elapsed2);
  
             System.out.println("Speed Test! First query took " + elapsed1 + "nanoseconds and second query took " + elapsed2 + " nanoseconds.");
             System.out.println("The second query is " + ratio + " times faster than the first. As you can see, the second query is much faster.\n");

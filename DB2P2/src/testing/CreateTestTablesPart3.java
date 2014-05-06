@@ -11,7 +11,7 @@ import simpledb.remote.SimpleDriver;
 
 
 public class CreateTestTablesPart3 {
-	final static int maxSize=3000;
+	final static int maxSize=1000;
 	
 	public static void main(String[] args) {
 		Connection conn = null;
@@ -180,13 +180,14 @@ public class CreateTestTablesPart3 {
 //---------------------------------------Post Query Comparison------------------------------------------------
 //------------------------------------------------------------------------------------------------------------
 
-        float ratio = (elapsed1 / elapsed2);
+        float ratio = ((float)elapsed1 / (float)elapsed2);
 
         System.out.println("Speed Test!");
-        System.out.println("First query took " + elapsed1 + "nanoseconds");
-        System.out.println("Second query took " + elapsed2 + "nanoseconds");
-        System.out.println("Third query took " + elapsed3 + "nanoseconds");
-        System.out.println("Fourth query took " + elapsed4 + "nanoseconds");
+        System.out.println("First query took\t" + elapsed1 + " nanoseconds");
+        System.out.println("Second query took\t" + elapsed2 + " nanoseconds");
+        System.out.println("Third query took\t" + elapsed3 + " nanoseconds");
+        System.out.println("Fourth query took\t" + elapsed4 + " nanoseconds");
+        System.out.println("The first query took " + ratio + " times as long as the second query");
 
         //Done query testing. :D
         conn.close();
