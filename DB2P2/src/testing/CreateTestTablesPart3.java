@@ -180,6 +180,17 @@ public class CreateTestTablesPart3 {
 //---------------------------------------Post Query Comparison------------------------------------------------
 //------------------------------------------------------------------------------------------------------------
 
+        float ratio = (elapsed1 / elapsed2);
+
+        System.out.println("Speed Test!");
+        System.out.println("First query took " + elapsed1 + "nanoseconds");
+        System.out.println("Second query took " + elapsed2 + "nanoseconds");
+        System.out.println("Third query took " + elapsed3 + "nanoseconds");
+        System.out.println("Fourth query took " + elapsed4 + "nanoseconds");
+
+        //Done query testing. :D
+        conn.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
