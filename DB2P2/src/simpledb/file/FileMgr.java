@@ -67,6 +67,8 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
       }
+      
+      System.out.println("IO read count: " + readCount + "\tTotal: " + (readCount + writeCount));
    }
 
    /**
@@ -84,6 +86,7 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
       }
+      System.out.println("IO write count: " + writeCount + "\tTotal: " + (readCount + writeCount));
    }
 
    /**
