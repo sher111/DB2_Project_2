@@ -174,6 +174,7 @@ public class EHashIndex implements Index {
 			}
 			insert(val, rid);
 		}
+		System.out.println(toString());
 	}
 
 	/**
@@ -190,6 +191,7 @@ public class EHashIndex implements Index {
 				ts.delete();
 				return;
 			}
+		System.out.println(toString());
 	}
 
 	/**

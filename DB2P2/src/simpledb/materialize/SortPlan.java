@@ -52,21 +52,27 @@ public class SortPlan implements Plan {
       while (runs.size() > 2)
          runs = doAMergeIteration(runs);
       
-      TempTable tt1 = runs.get(0);
-   	TempTable tt2 = runs.get(1);
-   	
-   	if (!tt1.getTableInfo().getTableName().equals(tt2.getTableInfo().getTableName())) {
-   		TempTable newTT1 = runs.get(0);
-   		TempTable newTT2 = runs.get(1);
-   		
-   		newTT1.ti.setSorted(false);
-   		newTT2.ti.setSorted(false);
-   		
-   		MetadataMgr.tblmgr.setTableInfo(newTT1.ti.getTableName(), newTT1.ti, newTT1.tx);
-   		MetadataMgr.tblmgr.setTableInfo(newTT2.ti.getTableName(), newTT2.ti, newTT2.tx);
-   	}
-   	
-      return new SortScan(runs, comp);
+      if(runs.size() == 1){
+      	return new SortScan(runs, comp);
+      }
+      else {
+      
+	      TempTable tt1 = runs.get(0);
+	   	TempTable tt2 = runs.get(1);
+	   	
+	   	if (!tt1.getTableInfo().getTableName().equals(tt2.getTableInfo().getTableName())) {
+	   		TempTable newTT1 = runs.get(0);
+	   		TempTable newTT2 = runs.get(1);
+	   		
+	   		newTT1.ti.setSorted(false);
+	   		newTT2.ti.setSorted(false);
+	   		
+	   		MetadataMgr.tblmgr.setTableInfo(newTT1.ti.getTableName(), newTT1.ti, newTT1.tx);
+	   		MetadataMgr.tblmgr.setTableInfo(newTT2.ti.getTableName(), newTT2.ti, newTT2.tx);
+	   	}
+	   	
+	      return new SortScan(runs, comp);
+      }
    }
    
    /**

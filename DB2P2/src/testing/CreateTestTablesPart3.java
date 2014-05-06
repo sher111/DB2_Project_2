@@ -153,30 +153,6 @@ public class CreateTestTablesPart3 {
             System.out.println("Elapsed time in nanoseconds: " + elapsed4 + "\n\n");
 
 //------------------------------------------------------------------------------------------------------------
-//------------------------------------------Query 5!----------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------
-           
-
-            /*
-            System.out.println("This is the fifth query");
- 
-            //Start the time, do the query, end the time, and check the elapsed.
-            start = System.nanoTime(); 
-            result = s.executeQuery("Select a1, a2 from test1 Where a1 = 20");
-            long end = System.nanoTime();
-            long elapsed1 = end - start; 
- 
-            // Print out all the results
-            while (result.next()) {
-                int a1 = result.getInt("a1");
-                int a2 = result.getInt("a2");
-                System.out.println("Result: a1 is " + a1 + " and a2 is " + a2);
-            }
-
-            System.out.println("Elapsed time in nanoseconds: " + elapsed1 + "\n\n");
-            */
-
-//------------------------------------------------------------------------------------------------------------
 //---------------------------------------Post Query Comparison------------------------------------------------
 //------------------------------------------------------------------------------------------------------------
 

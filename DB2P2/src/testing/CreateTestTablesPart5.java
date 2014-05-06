@@ -12,7 +12,7 @@ import simpledb.remote.SimpleDriver;
 
 public class CreateTestTablesPart5 {
 
-    final static int maxSize = 10;
+    final static int maxSize = 50;
 
     public static void main(String[] args) {
         Connection conn=null;
