@@ -8,7 +8,7 @@ import java.util.*;
  *
  */
 public class Predicate {
-   private List<Term> terms = new ArrayList<Term>();
+   public List<Term> terms = new ArrayList<Term>();
    
    /**
     * Creates an empty predicate, corresponding to "true".

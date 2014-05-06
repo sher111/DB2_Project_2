@@ -11,7 +11,7 @@ import simpledb.remote.SimpleDriver;
 
 
 public class CreateTestTablesPart3 {
-	final static int maxSize=1000;
+	final static int maxSize=3000;
 	
 	public static void main(String[] args) {
 		Connection conn = null;

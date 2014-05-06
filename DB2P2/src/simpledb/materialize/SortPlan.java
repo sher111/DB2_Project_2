@@ -24,6 +24,7 @@ public class SortPlan implements Plan {
     * @param tx the calling transaction
     */
    public SortPlan(Plan p, List<String> sortfields, Transaction tx) {
+   	//System.err.println("HALLELUJA!!!!!!!!!!!!!!!!!!");
       this.p = p;
       this.tx = tx;
       sch = p.schema();
@@ -37,6 +38,7 @@ public class SortPlan implements Plan {
     * @see simpledb.query.Plan#open()
     */
    public Scan open() {
+   	//System.err.println("HALLELUJA!!!!!!!!!!!!!!!!!!");
       Scan src = p.open();
       List<TempTable> runs = splitIntoRuns(src);
       src.close();

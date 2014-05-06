@@ -4,9 +4,11 @@ import simpledb.tx.Transaction;
 import simpledb.record.Schema;
 import simpledb.query.*;
 import simpledb.index.query.*;
+import simpledb.materialize.MergeJoinPlan;
 import simpledb.metadata.IndexInfo;
 import simpledb.multibuffer.MultiBufferProductPlan;
 import simpledb.server.SimpleDB;
+
 import java.util.Map;
 
 /**
@@ -80,6 +82,18 @@ class TablePlanner {
       Plan p = addSelectPred(myplan);
       return new MultiBufferProductPlan(current, p, tx);
    }
+   
+
+	public Plan makeMergeJoinPlan(Plan current) {
+		//System.err.println("this got called");
+		String leftSide = mypred.terms.get(0).lhs.asFieldName();
+		String rightSide = mypred.terms.get(0).rhs.asFieldName();
+		
+		Plan p = addSelectPred(myplan);
+		
+		return new MergeJoinPlan(current, p, leftSide, rightSide, tx);
+	}
+	
    
    private Plan makeIndexSelect() {
       for (String fldname : indexes.keySet()) {

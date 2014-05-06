@@ -8,7 +8,7 @@ import simpledb.record.Schema;
  *
  */
 public class Term {
-   private Expression lhs, rhs;
+   public Expression lhs, rhs;
    
    /**
     * Creates a new term that compares two expressions

@@ -123,6 +123,11 @@ public class EHashIndex implements Index {
 	 * @see simpledb.index.Index#insert(simpledb.query.Constant, simpledb.record.RID)
 	 */
 	public void insert(Constant val, RID rid) {
+		if (getBucket(val) == 9) {
+			System.err.println("FUCKING 9!!!!!!!!!!!!!!!!!!!!!!!!!");
+			return;
+		}
+		System.out.println(getBucket(val));
 		beforeFirst(val);
 		if (ts.eInsert()) {
 			ts.setInt("block", rid.blockNumber());
