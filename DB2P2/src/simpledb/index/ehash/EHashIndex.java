@@ -23,7 +23,8 @@ public class EHashIndex implements Index {
 	private Transaction tx;
 	private Constant searchkey = null;
 	private TableScan ts = null;
-	private ArrayList<Integer> indexes = new ArrayList<Integer>();
+	private static boolean first = true;
+	private static ArrayList<Integer> indexes = new ArrayList<Integer>();
 
 	/**
 	 * Opens an extensible hash index for the specified index.
@@ -35,8 +36,12 @@ public class EHashIndex implements Index {
 		this.idxname = idxname;
 		this.sch = sch;
 		this.tx = tx;
-		for (int i = 0; i < NUM_BUCKETS; i++) {
-			indexes.add(i, global_depth);
+		if (first) {
+			System.err.println("aa;lsdkjf;alksdfj;alskdjf;alskjdf;alskjf;laskdjf;alskdjf;alskdfj;alskdjf;alskdjf;alskdjfa;slfj;alskdfj;alskdfja;sldkfj");
+			first = false;
+			for (int i = 0; i < NUM_BUCKETS; i++) {
+				indexes.add(i, global_depth);
+			}
 		}
 	}
 
@@ -138,6 +143,10 @@ public class EHashIndex implements Index {
 			System.err.println("\nAdding Buffer");
 			
 			int bucket = getBucket(val);
+			System.err.println("Orig bucket:\t" + bucket);
+			bucket = bucket % ((Double)Math.pow(2, indexes.get(bucket))).intValue();
+			System.err.println("New bucket:\t" + bucket);
+			
 			indexes.set(bucket, indexes.get(bucket) + 1); // Change local depth
 			
 			System.err.println(toString());
@@ -150,6 +159,7 @@ public class EHashIndex implements Index {
 			System.err.println(toString());
 
 			int newBucket = bucket + (NUM_BUCKETS / 2);
+			indexes.set(newBucket, indexes.get(bucket));
 			
 			int local_index = indexes.get(newBucket);
 			String sigbin = toSigBinary(newBucket, local_index);
@@ -176,6 +186,7 @@ public class EHashIndex implements Index {
 					ts.delete();
 				}
 			}
+			System.out.println("Recursing");
 			insert(val, rid);
 		}
 	}

@@ -26,7 +26,7 @@ import simpledb.tx.Transaction;
  * @author Edward Sciore
  */
 public class SimpleDB {
-   public static int BUFFER_SIZE = 16;
+   public static int BUFFER_SIZE = 64;
    public static String LOG_FILE = "simpledb.log";
    
    private static FileMgr     fm;
